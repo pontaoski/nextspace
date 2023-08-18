@@ -1,0 +1,21 @@
+name: Nextspace CI
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+permissions:
+  contents: read
+jobs:
+  build:
+    container:
+      image: fedora:latest
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run CI
+      run: |
+        $GITHUB_WORKSPACE/Packaging/RedHat/0.build_libraries.sh $GITHUB_WORKSPACE
+        $GITHUB_WORKSPACE/Packaging/RedHat/1.build_frameworks.sh $GITHUB_WORKSPACE
+        $GITHUB_WORKSPACE/Packaging/RedHat/2.build_applications.sh $GITHUB_WORKSPACE
